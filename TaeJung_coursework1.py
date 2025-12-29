@@ -1,27 +1,27 @@
-# 1. 재고 딕셔너리 (비어 있는 상태로 시작)
-inventory = {}
 
-# 2. 샘플 아이템 데이터 (이름: str, 수량: int, 가격: float)
-sample_item_1 = {
-    "name": "Laptop",
-    "quantity": 5,
-    "price": 799.99
-}
+#1. Basic Setup 
+    #1-1) inventory start as a 0
+    inventory = {}
 
-sample_item_2 = {
-    "name": "Chair",
-    "quantity": 10,
-    "price": 49.50
-}
+    #1-2) Sample item data quantity/ name/ price
+    sample_item_1 = {
+        "name": "Laptop",
+        "quantity": 5,
+        "price": 799.99
+    }
 
-# 3. 샘플 아이템을 inventory에 넣기
-# 여기서는 간단히 숫자 ID를 key로 사용
-inventory[101] = sample_item_1
-inventory[102] = sample_item_2
+    sample_item_2 = {
+        "name": "Chair",
+        "quantity": 10,
+        "price": 49.50
+    }
 
-# (선택) 나중에 쓸 카테고리 리스트와 ID 셋
-categories = ["Electronics", "Home", "Office"]
-product_ids = {101, 102}
+    #1-3) Sample item in inventory / Add Id
+    inventory[101] = sample_item_1
+    inventory[102] = sample_item_2
 
-# 확인용 출력
-print(inventory)
+    # Categories and id set
+    categories = ["Electronics", "Home", "Office"]
+    product_ids = {101, 102}
+
+    print(inventory)
