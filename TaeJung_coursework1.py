@@ -6,24 +6,40 @@ inventory = {}
 categories = ["Electronics", "Home", "Office"]
 product_ids = set()
 
-#1-2) Sample item data (quantity/name/price + brand/category 추가!)
-sample_item_1 = {
-    "name": "Laptop",
-    "brand": ("Dell",),  #3 add brand tuple 
-    "category": "Electronics",
-    "quantity": 5,
-    "price": 799.99
-}
+#6. Object-Oriented Programming 
+class Product:
+    #basic 
+    def __init__(self, name, brand, category, quantity, price): #init=initialize
+        self.name = name
+        self.brand = brand
+        self.category = category
+        self.quantity = quantity
+        self.price = price
+    
+    def display(self, item_id):  # +item_id 
+        #pd info
+        print(f"ID: {item_id} | Name: {self.name} | Brand: {self.brand[0]} | Category: {self.category}")
+        print(f"Price: ${self.price:.2f} | Quantity: {self.quantity}")
+        print()
+    
+    def update_quantity(self, new_quantity):
+        #update quantity
+        self.quantity = new_quantity
 
-sample_item_2 = {
-    "name": "Chair",
-    "brand": ("IKEA",),  #3-2
-    "category": "Home",
-    "quantity": 10,
-    "price": 49.50
-}
+class PerishableProduct(Product):
+    #deadline pd
+    def __init__(self, name, brand, category, quantity, price, expiration_date):
+        super().__init__(name, brand, category, quantity, price)  # call parents class
+        self.expiration_date = expiration_date
+    
+    def display(self, item_id):  # +item_id 
+        #parents class method overwrite
+        super().display(item_id)  # call parents display
+        print(f"Expires: {self.expiration_date}")
 
-#1-3) Sample item in inventory / Add Id
+# sample 
+sample_item_1 = Product("Laptop", ("Dell",), "Electronics", 5, 799.99)
+sample_item_2 = PerishableProduct("Milk", ("Organic",), "Home", 10, 3.99, "2025-12-31")
 inventory[101] = sample_item_1
 product_ids.add(101)
 inventory[102] = sample_item_2
@@ -48,14 +64,12 @@ def add_item():
     quantity = int(quantity_str)
     price = float(price_str)
     
+    #6 create new pd
+    new_product = Product(name, brand, category, quantity, price)
+    
     new_id = max(product_ids) + 1 if product_ids else 101
     product_ids.add(new_id)
-    
-    new_item = {
-        "name": name, "brand": brand, "category": category,
-        "quantity": quantity, "price": price
-    }
-    inventory[new_id] = new_item
+    inventory[new_id] = new_product
     print("Item added successfully!\n")
 
 def view_inventory():
@@ -65,9 +79,7 @@ def view_inventory():
         print("Inventory is empty!")
     else:
         for item_id, item in inventory.items():
-            print(f"ID: {item_id} | Name: {item['name']} | Brand: {item['brand'][0]} | Category: {item['category']}")
-            print(f"Price: ${item['price']:.2f} | Quantity: {item['quantity']}")
-            print()
+            item.display(item_id) 
 
 def remove_item():
     print("\n=== Remove Item ===")
@@ -81,60 +93,10 @@ def remove_item():
     else:
         print("Item not found!")
 
-
 print("Initial inventory:", inventory)
 print("Used IDs:", product_ids)
 
-#2. User Input and Data Processing (중복 제거!)
-
-print("\n=== Add New Item ===")
-name = input("Enter product name: ")
-
-#3-2) category list 사용
-print("Select category:")
-for idx, cat in enumerate(categories, start=1):
-    print(f"{idx}. {cat}")
-
-category_choice = int(input("Enter category number: "))
-
-# -1 list index starts from 0, user chooose from 1 
-category = categories[category_choice - 1]
-
-brand_name = input("Enter brand name: ")
-brand = (brand_name,) 
-
-quantity_str = input("Enter quantity: ")
-price_str = input("Enter price: ")
-
-quantity = int(quantity_str)  
-price = float(price_str)     
-
-# add id +1 use set(x reapeat)
-new_id = max(product_ids) + 1 if product_ids else 101
-product_ids.add(new_id)
-
-new_item = {
-    "name": name,
-    "brand": brand,
-    "category": category,
-    "quantity": quantity,
-    "price": price
-}
-
-inventory[new_id] = new_item
-
-print("\nItem added successfully!\n")
-print("Current Inventory:")
-print("----------------------------")
-for item_id, item in inventory.items():
-    print(f"ID: {item_id} | Name: {item['name']} | Brand: {item['brand'][0]} | Category: {item['category']}")
-    print(f"Price: ${item['price']:.2f} | Quantity: {item['quantity']}")
-    print()
-
-#4. Conditional Statements & Loops
-    # select option
-    # 1=add 2=current 5=break
-    # go back
+#4. Conditional Statements & Loops 
 while True:
     print("\nWelcome to the Inventory Management System!")
     print("===========================================")
@@ -150,17 +112,13 @@ while True:
     
     if choice == "1":
         add_item()
-
     elif choice == "2":
         view_inventory()
-
     elif choice == "4":
         remove_item() 
-
     elif choice == "5":
         print("Saving inventory to file...")
         print("Exiting system. Goodbye!")
         break
-    
     else:
         print("Invalid option! Please select 1-5.")
