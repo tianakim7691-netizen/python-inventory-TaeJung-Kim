@@ -29,6 +29,9 @@ product_ids.add(101)
 inventory[102] = sample_item_2
 product_ids.add(102)
 
+
+
+
 print("Initial inventory:", inventory)
 print("Used IDs:", product_ids)
 
@@ -77,3 +80,69 @@ for item_id, item in inventory.items():
     print(f"ID: {item_id} | Name: {item['name']} | Brand: {item['brand'][0]} | Category: {item['category']}")
     print(f"Price: ${item['price']:.2f} | Quantity: {item['quantity']}")
     print()
+
+#4. Conditional Statements & Loops
+    # select option
+    # 1=add 2=current 5=break
+    # go back
+while True:
+    print("\nWelcome to the Inventory Management System!")
+    print("===========================================")
+    print("1. Add Item")
+    print("2. View Inventory")
+    print("3. Update Item")
+    print("4. Remove Item")
+    print("5. Exit")
+    print("===========================================")
+    
+    choice = input("Select an option: ") #selected bu user
+    
+    if choice == "1":
+        print("\n=== Add New Item ===")
+        name = input("Enter product name: ")
+        
+        print("Select category:")
+        for idx, cat in enumerate(categories, start=1):
+            print(f"{idx}. {cat}")
+        category_choice = int(input("Enter category number: "))
+        category = categories[category_choice - 1]
+        
+        brand_name = input("Enter brand name: ")
+        brand = (brand_name,)
+        
+        quantity_str = input("Enter quantity: ")
+        price_str = input("Enter price: ")
+        quantity = int(quantity_str)
+        price = float(price_str)
+        
+        new_id = max(product_ids) + 1 if product_ids else 101
+        product_ids.add(new_id)
+        
+        new_item = {
+            "name": name,
+            "brand": brand,
+            "category": category,
+            "quantity": quantity,
+            "price": price
+        }
+        inventory[new_id] = new_item
+        print("Item added successfully!\n")
+    
+    elif choice == "2":
+        print("\nCurrent Inventory:")
+        print("----------------------------")
+        if not inventory:
+            print("Inventory is empty!")
+        else:
+            for item_id, item in inventory.items():
+                print(f"ID: {item_id} | Name: {item['name']} | Brand: {item['brand'][0]} | Category: {item['category']}")
+                print(f"Price: ${item['price']:.2f} | Quantity: {item['quantity']}")
+                print()
+    
+    elif choice == "5":
+        print("Saving inventory to file...")
+        print("Exiting system. Goodbye!")
+        break
+    
+    else:
+        print("Invalid option! Please select 1-5.")
